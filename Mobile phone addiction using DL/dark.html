@@ -1,0 +1,301 @@
+<!--
+Smartphone Addiction Predictor — Sample Web Pages
+Includes: index.html (single-file SPA with 3 pages)
+Pages: 1) Landing, 2) Dashboard (live simulation), 3) Settings
+Instructions: open this file in a browser. Camera access is simulated by a placeholder. Replace simulation functions with real camera/RetinaFace integration as needed.
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Smartphone Addiction Predictor — Demo</title>
+<!--  
+<style>
+    :root{--bg:#0f1724;--card:#0b1220;--muted:#9aa4b2;--accent:#7c3aed;--glass: rgba(255,255,255,0.04)}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,Segoe UI,Arial;background:linear-gradient(180deg,#071024 0%,#07162b 100%);color:#e6eef6}
+    .container{max-width:1100px;margin:28px auto;padding:20px}
+    header{display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#4f46e5);display:flex;align-items:center;justify-content:center;font-weight:700}
+    nav a{color:var(--muted);text-decoration:none;margin-left:18px}
+    nav a.active{color:#fff}
+    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6);}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+    .col-8{grid-column:span 8}
+    .col-4{grid-column:span 4}
+    h1{margin:0;font-size:24px}
+    p.lead{color:var(--muted);margin-top:8px}
+    .btn{background:var(--accent);border:none;color:white;padding:10px 14px;border-radius:8px;cursor:pointer}
+    .muted{color:var(--muted);font-size:13px}
+    .metric{display:flex;gap:12px;align-items:center}
+    .metric .big{font-size:28px;font-weight:700}
+    .status-badge{padding:6px 10px;border-radius:999px;background:rgba(124,58,237,0.12);color:var(--accent);font-weight:600}
+    footer{margin-top:30px;text-align:center;color:var(--muted);font-size:13px}
+    /* responsive */
+    @media (max-width:900px){.col-8,.col-4{grid-column:span 12}}
+    /* video area */
+    .video-box{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:10px}
+    .video-preview{background:var(--glass);height:260px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+    .feature-list{display:flex;flex-direction:column;gap:8px}
+    code.kv{background:#061126;padding:6px 8px;border-radius:6px;color:#9ad0ff}
+  </style>
+-->
+<style>
+    /* COLOR CHANGE ONLY — all functionalities preserved */
+    :root{
+      --bg1:#eef7ff; /* soft blue */
+      --bg2:#d6e8ff; /* light sky blue */
+      --card:#ffffff;
+      --muted:#4a5b6a;
+      --accent:#1e6fd9; /* blue accent */
+      --glass: rgba(255,255,255,0.05);
+    }
+
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,Segoe UI,Arial;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:#1e2a32}
+    .container{max-width:1100px;margin:28px auto;padding:20px}
+    header{display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#0b57bc);display:flex;align-items:center;justify-content:center;font-weight:700;color:white}
+    nav a{color:var(--muted);text-decoration:none;margin-left:18px;font-weight:600}
+    nav a.active{color:#0b1424}
+    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 14px rgba(0,0,0,0.12)}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+    .col-8{grid-column:span 8}
+    .col-4{grid-column:span 4}
+    h1{margin:0;font-size:24px}
+    p.lead{color:var(--muted);margin-top:8px}
+    .btn{background:var(--accent);border:none;color:white;padding:10px 14px;border-radius:8px;cursor:pointer;font-weight:600}
+    .muted{color:var(--muted);font-size:13px}
+    .metric{display:flex;gap:12px;align-items:center}
+    .metric .big{font-size:28px;font-weight:700;color:#0b1424}
+    .status-badge{padding:6px 10px;border-radius:999px;background:rgba(30,111,217,0.15);color:var(--accent);font-weight:600}
+    footer{margin-top:30px;text-align:center;color:var(--muted);font-size:13px}
+    @media (max-width:900px){.col-8,.col-4{grid-column:span 12}}
+    .video-box{background:var(--glass);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:10px;backdrop-filter:blur(6px)}
+    .video-preview{background:white;height:260px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);box-shadow:inset 0 0 8px rgba(0,0,0,0.08)}
+    code.kv{background:#e3efff;padding:6px 8px;border-radius:6px;color:#1e6fd9}
+  </style>
+
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">SA</div>
+        <div>
+          <div style="font-weight:700">Smartphone Addiction Predictor</div>
+          
+        </div>
+      </div>
+      <nav>
+        <a href="#" data-route="home" class="active">Home</a>
+        <a href="#" data-route="dashboard">Dashboard</a>
+        <a href="#" data-route="settings">Settings</a>
+      </nav>
+    </header>
+
+    <main style="margin-top:18px">
+
+      <!-- HOME / Landing -->
+      <section id="page-home" class="card">
+        <div class="grid">
+          <div class="col-8">
+            <h1>Detect addiction risk using blink-based physiology</h1>
+            <p class="lead">This Application shows how eye-blink features (frequency, duration, irregularity) extracted from a live camera feed can be fed into an on-device MLP classifier to estimate addiction level (Normal / Moderate / High).</p>
+            <div style="margin-top:18px;display:flex;gap:12px">
+              <button class="btn" id="start-sim">Start Application</button>
+              <button class="btn" id="open-dashboard" style="background:#21325f">Open Dashboard</button>
+            </div>
+                      </div>
+
+          <div class="col-4">
+            <div class="card" style="padding:12px">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div class="muted">Current</div>
+                <div class="status-badge" id="sim-status">Stopped</div>
+              </div>
+              <div style="margin-top:12px">
+                <div class="metric"><div class="big" id="sim-blinks">--</div><div class="muted">blinks / min</div></div>
+                <div style="margin-top:8px" class="muted">Blink Duration: <code class="kv" id="sim-duration">--</code> ms</div>
+                <div style="margin-top:8px" class="muted">Irregularity: <code class="kv" id="sim-irreg">--</code></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DASHBOARD -->
+      <section id="page-dashboard" class="card" style="display:none;margin-top:16px">
+        <div class="grid">
+          <div class="col-8">
+            <h1>Real-time Dashboard </h1>
+            <p class="muted">Live preview, blink timeline and model prediction.</p>
+            <div style="margin-top:16px" class="video-box">
+              <div class="video-preview" id="video-preview">Video preview </div>
+              <div style="display:flex;gap:12px;align-items:center">
+                <button class="btn" id="btn-start">Start Camera</button>
+                <button class="btn" id="btn-stop" style="background:#334155">Stop</button>
+                <div class="muted">Model Status: <span id="model-status">Idle</span></div>
+              </div>
+            </div>
+
+            <div style="margin-top:16px" class="card">
+              <h3 style="margin:0">Blink Timeline</h3>
+              <div id="timeline" style="margin-top:10px;min-height:60px;color:var(--muted)">No data yet.</div>
+            </div>
+
+          </div>
+
+          <div class="col-4">
+            <div class="card">
+              <h3 style="margin:0">Prediction</h3>
+              <div style="margin-top:12px">
+                <div class="muted">Addiction Level</div>
+                <div style="margin-top:10px;font-size:22px;font-weight:700" id="pred-level">--</div>
+                <div style="margin-top:10px" class="muted">Confidence: <span id="pred-conf">--</span></div>
+                <div style="margin-top:12px"><button class="btn" id="btn-eval">Evaluate Now</button></div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:12px">
+              <h4 style="margin:0">Feature Summary</h4>
+              <div style="margin-top:8px;color:var(--muted)">
+                <div>Blinks/min: <strong id="fs-blink">--</strong></div>
+                <div>Avg duration (ms): <strong id="fs-duration">--</strong></div>
+                <div>Irregularity: <strong id="fs-irreg">--</strong></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="page-settings" class="card" style="display:none;margin-top:16px">
+        <h1>Settings</h1>
+        <p class="muted">Tweak thresholds and settings.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
+          <label class="muted">High threshold (blinks/min): <input type="number" id="th-high" value="40" style="margin-left:8px;width:80px"></label>
+          <label class="muted">Moderate threshold: <input type="number" id="th-mod" value="25" style="margin-left:8px;width:80px"></label>
+          <label class="muted">Window (sec): <input type="number" id="th-window" value="30" style="margin-left:8px;width:80px"></label>
+        </div>
+        <div style="margin-top:12px"><button class="btn" id="save-settings">Save Settings</button></div>
+      </section>
+
+      
+    </main>
+  </div>
+
+  <script>
+    // Simple SPA router
+    const routes = document.querySelectorAll('nav a');
+    routes.forEach(a=>a.addEventListener('click',e=>{
+      e.preventDefault();
+      routes.forEach(x=>x.classList.remove('active'));
+      a.classList.add('active');
+      const r = a.dataset.route;
+      showRoute(r);
+    }));
+    function showRoute(r){
+      document.getElementById('page-home').style.display = r==='home'?'block':'none';
+      document.getElementById('page-dashboard').style.display = r==='dashboard'?'block':'none';
+      document.getElementById('page-settings').style.display = r==='settings'?'block':'none';
+    }
+
+    document.getElementById('open-dashboard').addEventListener('click',()=>{
+      document.querySelector('nav a[data-route="dashboard"]').click();
+    });
+
+    // Simulation of blink features
+    let simInterval=null;
+    const startSimBtn = document.getElementById('start-sim');
+    const simStatus = document.getElementById('sim-status');
+    startSimBtn.addEventListener('click',()=>{
+      if(simInterval){clearInterval(simInterval);simInterval=null;simStatus.textContent='Stopped';startSimBtn.textContent='Start Application';return}
+      simStatus.textContent='Running';startSimBtn.textContent='Stop Application';
+      simInterval = setInterval(()=>{
+        const blinks = Math.round(10 + Math.random()*60); // random
+        const dur = Math.round(80 + Math.random()*220);
+        const ir = (Math.random()*2).toFixed(2);
+        document.getElementById('sim-blinks').textContent=blinks;
+        document.getElementById('sim-duration').textContent=dur;
+        document.getElementById('sim-irreg').textContent=ir;
+        // update globals used by dashboard
+        window.__sim = {blinks, dur, ir};
+      },1200);
+    });
+
+    // Dashboard controls: simple simulated camera behaviour
+    document.getElementById('btn-start').addEventListener('click',()=>{
+      document.getElementById('model-status').textContent='Running';
+      document.getElementById('video-preview').textContent='(Camera starting)';
+      // start small timeline
+      startTimeline();
+    });
+    document.getElementById('btn-stop').addEventListener('click',()=>{
+      document.getElementById('model-status').textContent='Idle';
+      document.getElementById('video-preview').textContent='Video preview ';
+      stopTimeline();
+    });
+
+    // timeline
+    let tlInterval=null;let tlData=[];
+    function startTimeline(){
+      if(tlInterval) return;
+      tlInterval = setInterval(()=>{
+        const s = window.__sim || {blinks:12,dur:120,ir:0.8};
+        tlData.push({t:Date.now(),...s}); if(tlData.length>20) tlData.shift();
+        renderTimeline();
+      },1500);
+    }
+    function stopTimeline(){clearInterval(tlInterval);tlInterval=null}
+    function renderTimeline(){
+      const el = document.getElementById('timeline');
+      el.innerHTML = '';
+      tlData.slice().reverse().forEach(d=>{
+        const node = document.createElement('div');
+        node.style.padding='6px 8px';node.style.borderBottom='1px solid rgba(255,255,255,0.02)';
+        node.style.fontSize='13px';node.style.color='var(--muted)';
+        node.textContent = `${new Date(d.t).toLocaleTimeString()} — ${d.blinks} bpm, dur ${d.dur} ms, ir ${d.ir}`;
+        el.appendChild(node);
+      });
+    }
+
+    // MLP evaluation simulation
+    document.getElementById('btn-eval').addEventListener('click',()=>{
+      const s = window.__sim || {blinks:10,dur:110,ir:0.7};
+      // simple rule-based classifier (replace with MLP weights/inference)
+      const highTh = Number(document.getElementById('th-high').value) || 40;
+      const modTh = Number(document.getElementById('th-mod').value) || 25;
+      const level = s.blinks >= highTh ? 'High' : (s.blinks >= modTh ? 'Moderate' : 'Normal');
+      const conf = Math.min(0.98, (s.blinks/ (highTh||40))).toFixed(2);
+      document.getElementById('pred-level').textContent = level;
+      document.getElementById('pred-conf').textContent = conf;
+      document.getElementById('fs-blink').textContent = s.blinks;
+      document.getElementById('fs-duration').textContent = s.dur;
+      document.getElementById('fs-irreg').textContent = s.ir;
+    });
+
+    // settings save
+    document.getElementById('save-settings').addEventListener('click',()=>{
+      alert('Settings saved (local only)');
+    });
+
+    // initialise
+    showRoute('home');
+  </script>
+  <section id="simulation-results" class="p-4 mt-6 border rounded bg-light">
+    <h2>   Results (Sample Values)</h2>
+    <ul>
+      <li><strong>Blink Frequency:</strong> 18 blinks/min</li>
+      <li><strong>Blink Duration:</strong> 220 ms</li>
+      <li><strong>Blink Irregularity:</strong> 0.34</li>
+      <li><strong>Predicted Addiction Level:</strong> Moderate</li>
+    </ul>
+  </section>
+</body>
+</html>
